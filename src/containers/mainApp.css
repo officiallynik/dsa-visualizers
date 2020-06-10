@@ -1,0 +1,27 @@
+.main-app {
+    background-color: #222222;
+    height: 100vh;
+}
+
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    justify-content: space-between;
+}
+.nav-bar-left{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-element {
+    color: white;
+    padding: 20px;
+    font-weight: bolder;
+    user-select: none;
+}
+
+.nav-element:hover {
+    background-color: white;
+    color: black;
+}
