@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/dsa-visualizers/static/css/main.eaef7514.chunk.css",
+    "main.js": "/dsa-visualizers/static/js/main.220a13ea.chunk.js",
+    "main.js.map": "/dsa-visualizers/static/js/main.220a13ea.chunk.js.map",
+    "runtime-main.js": "/dsa-visualizers/static/js/runtime-main.62f5e786.js",
+    "runtime-main.js.map": "/dsa-visualizers/static/js/runtime-main.62f5e786.js.map",
+    "static/js/2.1e2e285c.chunk.js": "/dsa-visualizers/static/js/2.1e2e285c.chunk.js",
+    "static/js/2.1e2e285c.chunk.js.map": "/dsa-visualizers/static/js/2.1e2e285c.chunk.js.map",
+    "index.html": "/dsa-visualizers/index.html",
+    "precache-manifest.1d4d2b9135e6ba8ffd831fa985a27bb0.js": "/dsa-visualizers/precache-manifest.1d4d2b9135e6ba8ffd831fa985a27bb0.js",
+    "service-worker.js": "/dsa-visualizers/service-worker.js",
+    "static/css/main.eaef7514.chunk.css.map": "/dsa-visualizers/static/css/main.eaef7514.chunk.css.map",
+    "static/js/2.1e2e285c.chunk.js.LICENSE.txt": "/dsa-visualizers/static/js/2.1e2e285c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.62f5e786.js",
+    "static/js/2.1e2e285c.chunk.js",
+    "static/css/main.eaef7514.chunk.css",
+    "static/js/main.220a13ea.chunk.js"
+  ]
+}
