@@ -31,7 +31,9 @@ const reducer = (state = initialState, action: { type: string, payload: any }) =
         case actionTypes.SET_RUNNING_TRUE:
             return {
                 ...state,
-                running: true
+                running: true,
+                swappers: [],
+                sorted: []
             }
         
         case actionTypes.SET_RUNNING_FALSE:
