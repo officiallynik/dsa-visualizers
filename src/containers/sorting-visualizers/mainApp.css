@@ -13,6 +13,10 @@
     display: flex;
     flex-direction: row;
 }
+.nav-bar-right{
+    display: flex;
+    flex-direction: row;
+}
 
 .nav-element {
     color: white;
@@ -24,4 +28,20 @@
 .nav-element:hover {
     background-color: white;
     color: black;
+}
+
+.slider{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.size-element{
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 0;
+    padding-right: 10px;
+    font-weight: bolder;
+    user-select: none;
 }

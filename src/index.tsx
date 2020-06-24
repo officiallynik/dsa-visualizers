@@ -8,6 +8,8 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import arrayReducer from './store/reducers/sortAlgos'
 
 const reducer = combineReducers({
@@ -21,7 +23,9 @@ const store = createStore(reducer,  composeEnhancers(applyMiddleware(thunk)))
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

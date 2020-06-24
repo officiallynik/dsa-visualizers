@@ -9,6 +9,17 @@ export const newArray: (size: number) => Object = size => {
     }
 }
 
+export const setRunning: (param: boolean) => Object = (param) => {
+    if(param){
+        return {
+            type: actionTypes.SET_RUNNING_TRUE
+        }
+    }
+    return {
+        type: actionTypes.SET_RUNNING_FALSE
+    }
+}
+
 export const bubbleSort: (param: any) => Object = (param) => {
     return {
         type: actionTypes.BUBBLE_SORT,
@@ -16,17 +27,18 @@ export const bubbleSort: (param: any) => Object = (param) => {
     }
 }
 
-export const bubbleSortArray: (arr: number[]) => any = (arr) => {
+export const bubbleSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(bubbleSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 1)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 
@@ -36,7 +48,6 @@ export const bubbleSortArray: (arr: number[]) => any = (arr) => {
             for (let j = 0; j < arr.length - i - 1; j++) {
                 params.push([j, j + 1])
                 if (arr[j] > arr[j + 1]) {
-                    params.push([])
                     params.push([j, j + 1, 'swap'])
                     let temp = arr[j + 1]
                     arr[j + 1] = arr[j]
@@ -64,17 +75,18 @@ export const selectionSort: (param: any) => Object = (param) => {
     }
 }
 
-export const selectionSortArray: (arr: number[]) => any = (arr) => {
+export const selectionSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(selectionSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 20)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 
@@ -108,18 +120,19 @@ export const insertionSort: (param: any) => Object = (param) => {
     }
 }
 
-export const insertionSortArray: (arr: number[]) => any = (arr) => {
+export const insertionSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(insertionSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 30)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
                 dispatch(insertionSort(arr.length))
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 
@@ -150,18 +163,19 @@ export const mergeSort: (param: any) => Object = (param) => {
     }
 }
 
-export const mergeSortArray: (arr: number[]) => any = (arr) => {
+export const mergeSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(mergeSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 30)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
                 dispatch(mergeSort(arr.length))
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 
@@ -212,18 +226,19 @@ export const quickSort: (param: any) => Object = (param) => {
     }
 }
 
-export const quickSortArray: (arr: number[]) => any = (arr) => {
+export const quickSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(quickSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 30)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
                 dispatch(quickSort(arr.length))
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 
@@ -275,17 +290,18 @@ export const heapSort: (param: any) => Object = (param) => {
     }
 }
 
-export const heapSortArray: (arr: number[]) => any = (arr) => {
+export const heapSortArray: (arr: number[], speed: number) => any = (arr, speed) => {
     return (dispatch: any) => {
+        dispatch(setRunning(true))
 
         const dispatchAction = (params: number[]) => {
             dispatch(heapSort(params.shift()));
 
             if (!!params.length) {
-                setTimeout(() => dispatchAction(params), 15)
+                setTimeout(() => dispatchAction(params), speed)
             }
             else {
-                console.log("DONE")
+                dispatch(setRunning(false))
             }
         }
 

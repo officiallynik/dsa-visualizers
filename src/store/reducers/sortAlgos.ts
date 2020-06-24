@@ -3,11 +3,13 @@ import * as actionTypes from '../actions/actionTypes'
 let initialState: {
     arr: number[],
     swappers: number[],
-    sorted: number[]
+    sorted: number[],
+    running: boolean
 } = {
     arr: [],
     swappers: [],
-    sorted: []
+    sorted: [],
+    running: false
 }
 
 const reducer = (state = initialState, action: { type: string, payload: any }) => {
@@ -25,6 +27,19 @@ const reducer = (state = initialState, action: { type: string, payload: any }) =
                 swappers: [],
                 sorted: []
             }
+
+        case actionTypes.SET_RUNNING_TRUE:
+            return {
+                ...state,
+                running: true
+            }
+        
+        case actionTypes.SET_RUNNING_FALSE:
+            return {
+                ...state,
+                running: false
+            }
+
         case actionTypes.BUBBLE_SORT:
             if (typeof (action.payload) === 'number') {
                 return {
