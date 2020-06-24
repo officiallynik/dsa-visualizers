@@ -4,7 +4,7 @@ import { newArray,
     insertionSortArray, 
     mergeSortArray, 
     quickSortArray,
-    heapSortArray 
+    heapSortArray
 } from './sortAlgos'
 
 export {

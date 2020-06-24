@@ -1,0 +1,24 @@
+.under-construction {
+    width: 100%;
+    height: 100%;
+}
+
+.display-box {
+    width: 300px;
+    height: 150px;
+    border-width: 5px;
+    border-color: black;
+    border-style: solid;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.display-box:hover {
+    background-color: black;
+    color: white;
+}
+
+.grid-view {
+    margin: 50px;
+}

@@ -9,9 +9,10 @@ import {
     heapSortArray
 } from '../../store/actions'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import './mainApp.css'
 
-import CustomSlider from '../../components/CustomSlider'
+import CustomSlider from '../../components/custom/CustomSlider'
 
 const MainApp: React.FC = (props: any) => {
     const calcSpeed = (arrSize: number) => {
@@ -25,7 +26,10 @@ const MainApp: React.FC = (props: any) => {
     const [speed, setSpeed] = useState(calcSpeed(arrSize));
 
     const { newArray } = props;
-    useEffect(() => newArray(60), [newArray]);
+
+    useEffect(() => {
+        newArray(65)
+    }, [newArray])
 
     const handleArrSize = (size: number) => {
         if(!props.running){
@@ -40,6 +44,13 @@ const MainApp: React.FC = (props: any) => {
     const Navbar = (
         <div className='nav-bar'>
             <div className='nav-bar-left'>
+                <div className='nav-element' 
+                    style={props.running?{color: 'gray'}:{}}
+                    onClick={() => {
+                        if(!props.running)
+                            props.history.push('/')
+                    }}  
+                >DSA PLAYGROUND</div>
                 <div className='nav-element' 
                     style={props.running?{color: 'gray'}:{}}
                     onClick={() => {
@@ -168,4 +179,4 @@ const mapDispatchToProps = (dispatch: any) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainApp)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainApp))

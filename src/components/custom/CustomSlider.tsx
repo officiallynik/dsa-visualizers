@@ -1,8 +1,6 @@
 import React from 'react'
 import { Slider } from 'rsuite'
 
-import 'rsuite/dist/styles/rsuite-default.css';
-
 const CustomSlider = (props: any) => {
   return (
     <div style={{...props.style}}>
