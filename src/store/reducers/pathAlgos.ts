@@ -22,8 +22,8 @@ const reducer = (state = initialState, action: {type: string, payload: any}) => 
         case actionTypes.ADD_EDGE:
             let {vertex1, vertex2} = action.payload
             adjList = {...state.adjacencyList}
-            adjList[vertex1.node].push(vertex2)
-            adjList[vertex2.node].push(vertex1)
+            adjList[vertex1].push(vertex2)
+            adjList[vertex2].push(vertex1)
             return {
                 ...state,
                 adjacencyList: adjList

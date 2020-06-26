@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes'
 
-import { PriorityQueue } from './helpers/priorityQueue'
+import { PriorityQueue } from './path-finders/priorityQueue'
 
 export const addVertex: (vertex: string) => Object = (vertex) => {
     return {
@@ -68,8 +68,8 @@ export const performDijkstra:
                         //find neighboring node
                         let nextNode = adjList[smallest][neighbor];
                         //calculate new distance to neighboring node
-                        let candidate = distances[smallest] + nextNode.weight;
-                        let nextNeighbor = nextNode.node;
+                        let candidate = distances[smallest] + 1;
+                        let nextNeighbor = nextNode;
                         if(candidate < distances[nextNeighbor]){
                             //updating new smallest distance to neighbor
                             distances[nextNeighbor] = candidate;

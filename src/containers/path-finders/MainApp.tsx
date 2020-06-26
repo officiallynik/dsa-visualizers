@@ -77,10 +77,10 @@ const MainApp: React.FC = (props: any) => {
                 let gridId = col + 1 + (row * gridCol)
                 addVertex(`${gridId}`)
                 if (gridId - 1 > 0 && (gridId - 1) % 60 !== 0) {
-                    addEdge({ node: `${gridId}`, weight: 1 }, { node: `${gridId - 1}`, weight: 3 })
+                    addEdge(`${gridId}`, `${gridId - 1}`)
                 }
                 if (gridId - gridCol > 0) {
-                    addEdge({ node: `${gridId}`, weight: 2 }, { node: `${gridId - gridCol}`, weight: 2 })
+                    addEdge(`${gridId}`, `${gridId - gridCol}`)
                 }
             }
         }
@@ -118,10 +118,12 @@ const MainApp: React.FC = (props: any) => {
             e.target.classList.toggle('block-wall')
         }
         else if (dragStart) {
-            setStart(parseInt(e.target.id))
+            document.getElementsByClassName('start-grid-element')[0].classList.remove('start-grid-element')
+            document.getElementById(e.target.id)?.classList.add('start-grid-element')
         }
         else if (dragFinish) {
-            setFinish(parseInt(e.target.id))
+            document.getElementsByClassName('finish-grid-element')[0].classList.remove('finish-grid-element')
+            document.getElementById(e.target.id)?.classList.add('finish-grid-element')
         }
     }
 
@@ -156,6 +158,8 @@ const MainApp: React.FC = (props: any) => {
                         setDragWall(false)
                         setDragFinish(false)
                         setDragStart(false)
+                        setStart(parseInt(document.getElementsByClassName('start-grid-element')[0].id))
+                        setFinish(parseInt(document.getElementsByClassName('finish-grid-element')[0].id))
                     }}
                     onMouseEnter={(e: any) => handleMouseEnter(e, gridId)}
                 >
