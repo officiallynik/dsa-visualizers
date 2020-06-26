@@ -19,7 +19,7 @@ const MainApp: React.FC = (props: any) => {
     const getBlockedIds = () => {
         let blockedIds = []
         let blockedVertices = document.getElementsByClassName('block-wall')
-        for(let i=0; i<blockedVertices.length; i++){
+        for (let i = 0; i < blockedVertices.length; i++) {
             blockedIds.push(blockedVertices[i].id)
         }
         return blockedIds
@@ -33,15 +33,10 @@ const MainApp: React.FC = (props: any) => {
                         props.history.push('/')
                     }}
                 >DSA PLAYGROUND</div>
-                <div className='nav-element'
-                    onClick={() => {
-
-                    }}
-                >Some Generator</div>
 
                 <div className='nav-element'
                     onClick={() => {
-                        props.performDijkstra(props.adjList, getBlockedIds(),`${start}`, `${finish}`)
+                        props.performDijkstra(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
                     }}>Dijstra's Algorithm</div>
 
                 <div className='nav-element'
@@ -58,27 +53,19 @@ const MainApp: React.FC = (props: any) => {
                     onClick={() => {
 
                     }}>BFS Algorithm</div>
-
-                <div className='nav-element'
-                    onClick={() => {
-
-                    }}>Other Algo</div>
-
-                <div className='nav-element'
-                    onClick={() => {
-
-                    }}>Some Other Algo</div>
             </div>
             <div className='nav-bar-right'>
-                <div className='size-element'>
-                    TREE RIGHT :
-                    </div>
-                <div className='size-element'>
-                    OPT
-                </div>
-                <div className='slider'>
+                <div className='nav-element'
+                    onClick={() => {
 
-                </div>
+                    }}
+                >Maze Generator</div>
+
+                <div className='nav-element'
+                    onClick={() => {
+
+                    }}
+                >Clear Walls</div>
             </div>
         </div>
     )
@@ -130,10 +117,10 @@ const MainApp: React.FC = (props: any) => {
         if (dragWall && gridId !== start && gridId !== finish) {
             e.target.classList.toggle('block-wall')
         }
-        else if(dragStart){
+        else if (dragStart) {
             setStart(parseInt(e.target.id))
         }
-        else if(dragFinish){
+        else if (dragFinish) {
             setFinish(parseInt(e.target.id))
         }
     }
@@ -145,6 +132,12 @@ const MainApp: React.FC = (props: any) => {
             let gridId = col + 1 + (row * gridCol)
 
             let classes = 'grid-element'
+            if (row === gridRow-1) {
+                classes += ' border-bottom'
+            }
+            if (col === gridCol-1){
+                classes += ' border-right'
+            }
             if (gridId === start) {
                 classes += ' start-grid-element'
             }

@@ -50,6 +50,13 @@
     justify-content: center;
 }
 
+.border-bottom {
+    border-bottom: 1px solid lightblue;
+}
+.border-right {
+    border-right: 1px solid lightblue;
+}
+
 .start-grid-element {
     background-color: yellow;
 }
