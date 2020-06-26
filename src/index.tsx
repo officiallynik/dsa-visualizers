@@ -13,9 +13,11 @@ import thunk from 'redux-thunk'
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import arrayReducer from './store/reducers/sortAlgos'
+import pathReducer from './store/reducers/pathAlgos'
 
 const reducer = combineReducers({
-  array: arrayReducer
+  array: arrayReducer,
+  pathFinders: pathReducer 
 })
 
 const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose || compose;

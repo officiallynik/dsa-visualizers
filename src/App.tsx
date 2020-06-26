@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import SortingVisualizers from './containers/sorting-visualizers/mainApp'
+import SortingVisualizers from './containers/sorting-visualizers/MainApp'
+import PathFinders from './containers/path-finders/MainApp'
 import MainPage from './components/main-page/MainPage'
 
 import { Route, Switch } from 'react-router-dom'
@@ -11,6 +12,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/sorting-visualizers" exact component={SortingVisualizers} />
+        <Route path="/path-finders" exact component={PathFinders} />
         <Route path="/" component={MainPage} />
       </Switch>
       <Route path="/under-construction" exact component={UnderConstruction} />

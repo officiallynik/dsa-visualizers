@@ -10,7 +10,7 @@ import {
 } from '../../store/actions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import './mainApp.css'
+import './MainApp.css'
 
 import CustomSlider from '../../components/custom/CustomSlider'
 
