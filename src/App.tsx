@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import SortingVisualizers from './containers/sorting-visualizers/mainApp'
+import SortingVisualizers from './containers/sorting-visualizers/MainApp'
 import MainPage from './components/main-page/MainPage'
 
 import { Route, Switch } from 'react-router-dom'
