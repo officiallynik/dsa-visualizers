@@ -1,0 +1,19 @@
+.custom-button {
+    background-color: black;
+    color: white;
+    user-select: none;
+}
+
+.custom-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.button-name {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;  
+}

@@ -28,13 +28,8 @@ const CustomNavbar = (props: any) => (
 
             <div className='nav-element' 
                 onClick={() => {
-                    props.history.push('/under-construction')
-            }}>List Data Structures</div>
-
-            <div className='nav-element' 
-                onClick={() => {
-                    props.history.push('/under-construction')
-            }}>Stacks And Queues</div>
+                    props.history.push('/stacks-queues-lists')
+            }}>Stacks, Queues and List</div>
 
             <div className='nav-element' 
                 onClick={() => {
