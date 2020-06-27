@@ -11,7 +11,9 @@ import {
 import {
     addEdge,
     addVertex,
-    performDijkstra
+    BFSGraphSearch,
+    DFSGraphSearch,
+    DijkstraGraphSearch
 } from './pathAlgos'
 
 
@@ -21,5 +23,5 @@ export {
 }
 
 export {
-    addEdge, addVertex, performDijkstra
+    addEdge, addVertex, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch
 }

@@ -2,10 +2,12 @@ import * as actionTypes from '../actions/actionTypes'
 
 let initialState: {
     adjacencyList: any,
-    pathList: string[]
+    pathList: string[],
+    visited: string[]
 } = {
     adjacencyList: {},
-    pathList: []
+    pathList: [],
+    visited: []
 }
 
 const reducer = (state = initialState, action: {type: string, payload: any}) => {
@@ -29,10 +31,12 @@ const reducer = (state = initialState, action: {type: string, payload: any}) => 
                 adjacencyList: adjList
             }
 
-        case actionTypes.DIJKSTRAS:
+        case actionTypes.ANIMATE:
+            let {visited, path} = action.payload
             return {
                 ...state,
-                pathList: action.payload.pathList
+                visited: visited,
+                pathList: path
             }
     
         default:

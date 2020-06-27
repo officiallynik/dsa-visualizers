@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import './MainApp.css'
 import { connect } from 'react-redux'
 
-import { addVertex, addEdge, performDijkstra } from '../../store/actions'
+import { addVertex, addEdge, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch } from '../../store/actions'
 
 const MainApp: React.FC = (props: any) => {
     const gridRow = 30;
@@ -36,7 +36,7 @@ const MainApp: React.FC = (props: any) => {
 
                 <div className='nav-element'
                     onClick={() => {
-                        props.performDijkstra(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        props.DijkstraGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
                     }}>Dijstra's Algorithm</div>
 
                 <div className='nav-element'
@@ -46,12 +46,12 @@ const MainApp: React.FC = (props: any) => {
 
                 <div className='nav-element'
                     onClick={() => {
-
+                        props.DFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
                     }}>DFS Algorithm</div>
 
                 <div className='nav-element'
                     onClick={() => {
-
+                        props.BFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
                     }}>BFS Algorithm</div>
             </div>
             <div className='nav-bar-right'>
@@ -86,8 +86,8 @@ const MainApp: React.FC = (props: any) => {
         }
     }, [addEdge, addVertex])
 
-    let { pathList } = props;
-    useEffect(() => {
+    const { pathList } = props
+    const animatePath = () => {
         let idx = 1
         const interval = setInterval(() => {
             if (pathList.length > 0 && idx !== pathList.length - 1) {
@@ -98,7 +98,23 @@ const MainApp: React.FC = (props: any) => {
                 clearInterval(interval)
             }
         }, 50)
-    }, [pathList])
+    }
+
+    let { visitedList } = props;
+    useEffect(() => {
+        let idx = 1
+        const interval = setInterval(() => {
+            if (visitedList.length > 0 && idx !== visitedList.length-1) {
+                document.getElementById(visitedList[idx])?.classList.add('visited-grid');
+                idx++;
+            }
+            else {
+                animatePath()
+                clearInterval(interval)
+            }
+        }, 10)
+    }, [visitedList, start, finish])
+
 
     const handleMouseDown = (e: any, gridId: any) => {
         if (gridId !== start && gridId !== finish) {
@@ -134,10 +150,10 @@ const MainApp: React.FC = (props: any) => {
             let gridId = col + 1 + (row * gridCol)
 
             let classes = 'grid-element'
-            if (row === gridRow-1) {
+            if (row === gridRow - 1) {
                 classes += ' border-bottom'
             }
-            if (col === gridCol-1){
+            if (col === gridCol - 1) {
                 classes += ' border-right'
             }
             if (gridId === start) {
@@ -186,7 +202,8 @@ const MainApp: React.FC = (props: any) => {
 const mapStateToProps = (state: any) => {
     return {
         adjList: state.pathFinders.adjacencyList,
-        pathList: state.pathFinders.pathList
+        pathList: state.pathFinders.pathList,
+        visitedList: state.pathFinders.visited
     }
 }
 
@@ -194,7 +211,9 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         addVertex: (vertex: string) => dispatch(addVertex(vertex)),
         addEdge: (vertex1: string, vertex2: string) => dispatch(addEdge(vertex1, vertex2)),
-        performDijkstra: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(performDijkstra(adjList, blockedIds, startVertex, endVertex))
+        BFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(BFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
+        DFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
+        DijkstraGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, blockedIds, startVertex, endVertex))
     }
 }
 

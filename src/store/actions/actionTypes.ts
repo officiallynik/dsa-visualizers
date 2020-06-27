@@ -10,4 +10,4 @@ export const HEAP_SORT= 'HEAP_SORT'
 
 export const ADD_VERTEX = 'ADD_VERTEX'
 export const ADD_EDGE = 'ADD_EDGE'
-export const DIJKSTRAS = 'DIJKSTRAS'
+export const ANIMATE = 'ANIMATE'
