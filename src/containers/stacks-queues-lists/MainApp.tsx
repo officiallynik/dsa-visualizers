@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+
+import { handlePush, handlePeek } from './helpers/stacks'
 
 import './MainApp.css'
 import CustomButton from './components/Button'
@@ -9,7 +11,7 @@ const StacksQueuesLists: React.FC = (props: any) => {
 
     const [screen, setScreen] = useState(0)
 
-    const [stack, setStack] = useState([1, 2, 3, 4, 5])
+    const [stack, setStack] = useState<number[]>([])
     const [queue, setQueue] = useState([1, 2, 3, 4, 5])
 
     const Navbar = (
@@ -57,30 +59,15 @@ const StacksQueuesLists: React.FC = (props: any) => {
         </div>
     )
 
-    const handlePopAction = () => {
-        document.getElementById('head-element')?.classList.add('being-behead')
-        document.getElementsByClassName('stack-element')[1].classList.add('being-head')
-        setTimeout(() => {
-            let arr = [...stack]
-            arr.shift() 
-            setStack(arr)
-            document.getElementById('head-element')?.classList.remove('being-behead')
-            document.getElementsByClassName('stack-element')[1].classList.remove('being-head')
-        }, 1000)
-    }
-
     const stackDisplay = (
         <div className='main-display' style={screen !== 0? {display: 'none'}: {}}>
             <div className='left-section'>
                 <div className='display-section'>
                     {stack.map((ele: any, idx: number) => {
-                        let classes = 'stack-element'
-                        let id = ''
-                        if(idx === 0){
-                            id += 'head-element'
-                        }
                         return (
-                            <div className='stack-element' id={id} key={idx}>{ele}</div>
+                            <div className='stack-element' key={idx}>
+                                {ele}
+                            </div>
                         )
                     })}
                 </div>
@@ -89,7 +76,10 @@ const StacksQueuesLists: React.FC = (props: any) => {
                 <div className='options'>
                     <div className='option-row'>
                         <CustomButton styles={{ width: '49%', height: '98%' }}>Create</CustomButton>
-                        <CustomButton styles={{ width: '49%', height: '98%' }}>Peek</CustomButton>
+                        <CustomButton 
+                            styles={{ width: '49%', height: '98%' }}
+                            handleButtonClick={handlePeek}  
+                        >Peek</CustomButton>
                     </div>
                     <div className='option-row'>
                         <CustomButton 
@@ -101,7 +91,11 @@ const StacksQueuesLists: React.FC = (props: any) => {
                         >Push</CustomButton>
                         <CustomButton   
                             styles={{ width: '49%', height: '98%' }}
-                            handleButtonClick={() => handlePopAction()}   
+                            handleButtonClick={() => {
+                                let arr = [...stack]
+                                arr.shift()
+                                setStack(arr)
+                            }}   
                         >Pop</CustomButton>
                     </div>
                 </div>
@@ -117,7 +111,7 @@ const StacksQueuesLists: React.FC = (props: any) => {
                 <div className='display-section'>
                     {queue.map((ele: any, idx: number) => {
                         return (
-                            <div className='stack-element' key={idx}>{ele}</div>
+                            <div key={idx}>{ele}</div>
                         )
                     })}
                 </div>
@@ -193,6 +187,10 @@ const StacksQueuesLists: React.FC = (props: any) => {
             </div>
         </div>
     )
+
+    useEffect(() => {
+        handlePush()
+    }, [stack])
 
     return (
         <div>
