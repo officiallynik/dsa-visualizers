@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
-import { handlePush, handlePeek } from './helpers/stacks'
+import { handlePush, handlePeek, handlePop, handleCreate } from './helpers/stacks'
+import { handleQCreate, handleDeQ, handleQPeek, handleEnQ } from './helpers/queues'
 
 import './MainApp.css'
 import CustomButton from './components/Button'
@@ -12,7 +11,9 @@ const StacksQueuesLists: React.FC = (props: any) => {
     const [screen, setScreen] = useState(0)
 
     const [stack, setStack] = useState<number[]>([])
-    const [queue, setQueue] = useState([1, 2, 3, 4, 5])
+    const [queue, setQueue] = useState<number[]>([])
+
+    const [opt, setOpt] = useState<string|null>(null)
 
     const Navbar = (
         <div className='nav-bar'>
@@ -65,7 +66,7 @@ const StacksQueuesLists: React.FC = (props: any) => {
                 <div className='display-section'>
                     {stack.map((ele: any, idx: number) => {
                         return (
-                            <div className='stack-element' key={idx}>
+                            <div className={idx === 0? 'stack-element head-element': 'stack-element'} key={idx}>
                                 {ele}
                             </div>
                         )
@@ -75,7 +76,12 @@ const StacksQueuesLists: React.FC = (props: any) => {
             <div className='right-section'>
                 <div className='options'>
                     <div className='option-row'>
-                        <CustomButton styles={{ width: '49%', height: '98%' }}>Create</CustomButton>
+                        <CustomButton 
+                            styles={{ width: '49%', height: '98%' }}
+                            handleButtonClick={() => {
+                                handleCreate(setStack)
+                            }}
+                        >Create</CustomButton>
                         <CustomButton 
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={handlePeek}  
@@ -85,6 +91,7 @@ const StacksQueuesLists: React.FC = (props: any) => {
                         <CustomButton 
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
+                                setOpt('push')
                                 let arr = [...stack]
                                 setStack([Math.floor(Math.random() * 100), ...arr])
                             }}    
@@ -92,9 +99,7 @@ const StacksQueuesLists: React.FC = (props: any) => {
                         <CustomButton   
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
-                                let arr = [...stack]
-                                arr.shift()
-                                setStack(arr)
+                                setOpt('pop')
                             }}   
                         >Pop</CustomButton>
                     </div>
@@ -111,7 +116,9 @@ const StacksQueuesLists: React.FC = (props: any) => {
                 <div className='display-section'>
                     {queue.map((ele: any, idx: number) => {
                         return (
-                            <div key={idx}>{ele}</div>
+                            <div className={idx === 0? 'queue-element head-element': idx === queue.length-1? 'queue-element tail-element': 'queue-element' } key={idx}>
+                                {ele}
+                            </div>
                         )
                     })}
                 </div>
@@ -119,23 +126,30 @@ const StacksQueuesLists: React.FC = (props: any) => {
             <div className='right-section'>
                 <div className='options'>
                     <div className='option-row'>
-                        <CustomButton styles={{ width: '49%', height: '98%' }}>Create</CustomButton>
-                        <CustomButton styles={{ width: '49%', height: '98%' }}>Peek</CustomButton>
+                        <CustomButton 
+                            styles={{ width: '49%', height: '98%' }}
+                            handleButtonClick={() => handleQCreate(setQueue)} 
+                        >
+                            Create
+                        </CustomButton>
+                        <CustomButton 
+                            styles={{ width: '49%', height: '98%' }}
+                            handleButtonClick={handleQPeek}
+                        >Peek</CustomButton>
                     </div>
                     <div className='option-row'>
                         <CustomButton 
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
                                 let arr = [...queue]
-                                setQueue([Math.floor(Math.random() * 10), ...arr])
+                                setQueue([...arr, Math.floor(Math.random() * 10)])
+                                setOpt('queue')
                             }}
                         >Enqueue</CustomButton>
                         <CustomButton 
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
-                                let arr = [...queue]
-                                arr.pop()
-                                setQueue(arr)
+                                setOpt('dequeue')
                             }}
                         >Dequeue</CustomButton>
                     </div>
@@ -188,14 +202,48 @@ const StacksQueuesLists: React.FC = (props: any) => {
         </div>
     )
 
+    const dummyStack = (
+        <div style={{display: 'None'}}>
+            <div className='stack-element'></div>
+            <div className='stack-element'></div>
+        </div>
+    )
+    const dummyQ = (
+        <div style={{display: 'None'}}>
+            <div className='queue-element'></div>
+            <div className='queue-element'></div>
+        </div>
+    )
+
     useEffect(() => {
-        handlePush()
-    }, [stack])
+        switch (opt) {
+            case 'push':
+                handlePush(setOpt)
+                break;
+            
+            case 'pop':
+                handlePop([...stack], setStack, setOpt)
+                break
+
+            case 'dequeue':
+                handleDeQ([...queue], setQueue, setOpt)
+                break
+
+            case 'queue':
+                handleEnQ(setOpt)
+                break
+
+            default:
+                break;
+        }
+    }, [opt, stack, queue])
 
     return (
         <div>
             {Navbar}
             {stackDisplay}
+            {dummyStack}
+            {dummyQ}
             {queueDisplay}
             {linkedListDisplay}
             {doublyLinkedListDisplay}
