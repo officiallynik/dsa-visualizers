@@ -37,6 +37,7 @@
     border-top: 1px solid lightblue;
     border-left: 1px solid lightblue;
     display: grid;
+    align-content: center;
 }
 
 .grid-main {
