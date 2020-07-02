@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/dsa-visualizers/static/css/main.b2b1bb57.chunk.css",
+    "main.css": "/dsa-visualizers/static/css/main.0ec76a51.chunk.css",
     "main.js": "/dsa-visualizers/static/js/main.92e4f7cb.chunk.js",
     "main.js.map": "/dsa-visualizers/static/js/main.92e4f7cb.chunk.js.map",
     "runtime-main.js": "/dsa-visualizers/static/js/runtime-main.62f5e786.js",
@@ -9,17 +9,17 @@
     "static/js/2.506fafbd.chunk.js": "/dsa-visualizers/static/js/2.506fafbd.chunk.js",
     "static/js/2.506fafbd.chunk.js.map": "/dsa-visualizers/static/js/2.506fafbd.chunk.js.map",
     "index.html": "/dsa-visualizers/index.html",
-    "precache-manifest.30f6846d5241d6437a84299d62cf222c.js": "/dsa-visualizers/precache-manifest.30f6846d5241d6437a84299d62cf222c.js",
+    "precache-manifest.f9f97eb7ecc39a6a7b54bc3de312b39e.js": "/dsa-visualizers/precache-manifest.f9f97eb7ecc39a6a7b54bc3de312b39e.js",
     "service-worker.js": "/dsa-visualizers/service-worker.js",
     "static/css/2.f005c5ff.chunk.css.map": "/dsa-visualizers/static/css/2.f005c5ff.chunk.css.map",
-    "static/css/main.b2b1bb57.chunk.css.map": "/dsa-visualizers/static/css/main.b2b1bb57.chunk.css.map",
+    "static/css/main.0ec76a51.chunk.css.map": "/dsa-visualizers/static/css/main.0ec76a51.chunk.css.map",
     "static/js/2.506fafbd.chunk.js.LICENSE.txt": "/dsa-visualizers/static/js/2.506fafbd.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.62f5e786.js",
     "static/css/2.f005c5ff.chunk.css",
     "static/js/2.506fafbd.chunk.js",
-    "static/css/main.b2b1bb57.chunk.css",
+    "static/css/main.0ec76a51.chunk.css",
     "static/js/main.92e4f7cb.chunk.js"
   ]
 }
