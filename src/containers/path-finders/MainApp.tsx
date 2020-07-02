@@ -3,18 +3,20 @@ import { withRouter } from 'react-router-dom'
 import './MainApp.css'
 import { connect } from 'react-redux'
 
-import { addVertex, addEdge, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch } from '../../store/actions'
+import { addVertex, addEdge, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath } from '../../store/actions'
 
 const MainApp: React.FC = (props: any) => {
-    const gridRow = 30;
-    const gridCol = 60;
+    const gridRow = 31;
+    const gridCol = 69;
 
-    const [start, setStart] = useState(310)
-    const [finish, setFinish] = useState(1240)
+    const [start, setStart] = useState(1045)
+    const [finish, setFinish] = useState(1095)
 
     const [dragWall, setDragWall] = useState(false)
     const [dragStart, setDragStart] = useState(false)
     const [dragFinish, setDragFinish] = useState(false)
+
+    const [running, setRunnng] = useState(false)
 
     const getBlockedIds = () => {
         let blockedIds = []
@@ -25,47 +27,106 @@ const MainApp: React.FC = (props: any) => {
         return blockedIds
     }
 
+    const resetBoard = () => {
+        props.reset()
+        let walls = document.querySelectorAll(".block-wall");
+        [].forEach.call(walls, function (el: any) {
+            el.classList.remove("block-wall");
+        });
+
+        let elems = document.querySelectorAll(".path-grid");
+        [].forEach.call(elems, function (el: any) {
+            el.classList.remove("path-grid");
+        });
+
+        let visiteds = document.querySelectorAll(".visited-grid");
+        [].forEach.call(visiteds, function (el: any) {
+            el.classList.remove("visited-grid");
+        });
+
+        let ends = document.querySelectorAll(".found-path");
+        [].forEach.call(ends, function (el: any) {
+            el.classList.remove("found-path");
+        });
+    }
+
+    const softReset = () => {
+        props.reset(true)
+        let elems = document.querySelectorAll(".path-grid");
+        [].forEach.call(elems, function (el: any) {
+            el.classList.remove("path-grid");
+        });
+
+        let visiteds = document.querySelectorAll(".visited-grid");
+        [].forEach.call(visiteds, function (el: any) {
+            el.classList.remove("visited-grid");
+        });
+
+        let ends = document.querySelectorAll(".found-path");
+        [].forEach.call(ends, function (el: any) {
+            el.classList.remove("found-path");
+        });
+    }
+
     const Navbar = (
         <div className='nav-bar'>
             <div className='nav-bar-left'>
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-                        props.history.push('/')
+                        if(!running)
+                            props.history.push('/')
                     }}
                 >DSA PLAYGROUND</div>
 
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-                        props.DijkstraGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        setRunnng(true)
+                        if(!running){
+                            softReset()
+                            props.DijkstraGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        }
                     }}>Dijstra's Algorithm</div>
 
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-
+                        
                     }}>Astar Algorithm</div>
 
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-                        props.DFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        setRunnng(true)
+                        if(!running){
+                            softReset()
+                            props.DFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        }
                     }}>DFS Algorithm</div>
 
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-                        props.BFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        setRunnng(true)
+                        if(!running){
+                            softReset()
+                            props.BFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                        }
                     }}>BFS Algorithm</div>
             </div>
             <div className='nav-bar-right'>
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-
+                        setRunnng(true)
+                        if(!running){
+                            resetBoard()
+                            props.mazeGenerator(gridRow, gridCol, start, finish)
+                        }
                     }}
                 >Maze Generator</div>
 
-                <div className='nav-element'
+                <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-
+                        if(!running)
+                            resetBoard()
                     }}
-                >Clear Walls</div>
+                >Clear Board</div>
             </div>
         </div>
     )
@@ -76,7 +137,7 @@ const MainApp: React.FC = (props: any) => {
             for (let col = 0; col < gridCol; col++) {
                 let gridId = col + 1 + (row * gridCol)
                 addVertex(`${gridId}`)
-                if (gridId - 1 > 0 && (gridId - 1) % 60 !== 0) {
+                if (gridId - 1 > 0 && (gridId - 1) % gridCol !== 0) {
                     addEdge(`${gridId}`, `${gridId - 1}`)
                 }
                 if (gridId - gridCol > 0) {
@@ -88,23 +149,34 @@ const MainApp: React.FC = (props: any) => {
 
     const { pathList } = props
     const animatePath = () => {
-        let idx = 1
-        const interval = setInterval(() => {
-            if (pathList.length > 0 && idx !== pathList.length - 1) {
-                document.getElementById(pathList[idx])?.classList.add('path-grid');
-                idx++;
-            }
-            else {
-                clearInterval(interval)
-            }
-        }, 50)
+        let idx = 0
+        if(pathList.length > 1){
+            const interval = setInterval(() => {
+                if (idx !== pathList.length) {
+                    document.getElementById(pathList[idx])?.classList.add('path-grid');
+                    idx++;
+                }
+                else {
+                    if(visitedList.length > 0){
+                        setRunnng(false)
+                    }
+                    clearInterval(interval)
+                    document.getElementById(`${start}`)?.classList.add('found-path')
+                    document.getElementById(`${finish}`)?.classList.add('found-path')
+                }
+            }, 50)
+        }
+        else if(visitedList.length > 0){
+            setRunnng(false)
+        }
     }
 
     let { visitedList } = props;
     useEffect(() => {
-        let idx = 1
+        let idx = 0
         const interval = setInterval(() => {
-            if (visitedList.length > 0 && idx !== visitedList.length-1) {
+            // console.log(idx, visitedList[idx])
+            if (visitedList.length > 0 && idx !== visitedList.length) {
                 document.getElementById(visitedList[idx])?.classList.add('visited-grid');
                 idx++;
             }
@@ -113,8 +185,25 @@ const MainApp: React.FC = (props: any) => {
                 clearInterval(interval)
             }
         }, 10)
-    }, [visitedList, start, finish])
+    }, [visitedList])
 
+    let { mazeBlocks } = props
+    useEffect(() => {
+        if (mazeBlocks.length > 0) {
+            document.getElementById(`${mazeBlocks[0]}`)?.classList.add('block-wall')
+            let idx = 1
+            const interval = setInterval(() => {
+                if (idx !== start && idx !== finish) {
+                    document.getElementById(`${mazeBlocks[idx]}`)?.classList.add('block-wall');
+                }
+                if (idx === mazeBlocks.length) {
+                    setRunnng(false)
+                    clearInterval(interval)
+                }
+                idx++;
+            }, 5)
+        }
+    }, [mazeBlocks, finish, start])
 
     const handleMouseDown = (e: any, gridId: any) => {
         if (gridId !== start && gridId !== finish) {
@@ -134,12 +223,22 @@ const MainApp: React.FC = (props: any) => {
             e.target.classList.toggle('block-wall')
         }
         else if (dragStart) {
-            document.getElementsByClassName('start-grid-element')[0].classList.remove('start-grid-element')
+            let lastStart = document.getElementsByClassName('start-grid-element')[0]
+            lastStart.classList.remove('start-grid-element')
+            lastStart.classList.remove('fas')
+            lastStart.classList.remove('fa-running')
             document.getElementById(e.target.id)?.classList.add('start-grid-element')
+            document.getElementById(e.target.id)?.classList.add('fas')
+            document.getElementById(e.target.id)?.classList.add('fa-running')
         }
         else if (dragFinish) {
-            document.getElementsByClassName('finish-grid-element')[0].classList.remove('finish-grid-element')
+            let lastFinish = document.getElementsByClassName('finish-grid-element')[0]
+            lastFinish.classList.remove('finish-grid-element')
+            lastFinish.classList.remove('fas')
+            lastFinish.classList.remove('fa-home')
             document.getElementById(e.target.id)?.classList.add('finish-grid-element')
+            document.getElementById(e.target.id)?.classList.add('fas')
+            document.getElementById(e.target.id)?.classList.add('fa-home')
         }
     }
 
@@ -157,10 +256,10 @@ const MainApp: React.FC = (props: any) => {
                 classes += ' border-right'
             }
             if (gridId === start) {
-                classes += ' start-grid-element'
+                classes += ' start-grid-element fas fa-running'
             }
             if (gridId === finish) {
-                classes += ' finish-grid-element'
+                classes += ' finish-grid-element fas fa-home'
             }
 
             elements.push(
@@ -169,15 +268,23 @@ const MainApp: React.FC = (props: any) => {
                     className={classes}
                     id={`${gridId}`}
 
-                    onMouseDown={(e: any) => handleMouseDown(e, gridId)}
-                    onMouseUp={() => {
-                        setDragWall(false)
-                        setDragFinish(false)
-                        setDragStart(false)
-                        setStart(parseInt(document.getElementsByClassName('start-grid-element')[0].id))
-                        setFinish(parseInt(document.getElementsByClassName('finish-grid-element')[0].id))
+                    onMouseDown={(e: any) => {
+                        if(!running)
+                            handleMouseDown(e, gridId)
                     }}
-                    onMouseEnter={(e: any) => handleMouseEnter(e, gridId)}
+                    onMouseUp={() => {
+                        if(!running){
+                            setDragWall(false)
+                            setDragFinish(false)
+                            setDragStart(false)
+                            setStart(parseInt(document.getElementsByClassName('start-grid-element')[0].id))
+                            setFinish(parseInt(document.getElementsByClassName('finish-grid-element')[0].id))
+                        }
+                    }}
+                    onMouseEnter={(e: any) => {
+                        if(!running)
+                            handleMouseEnter(e, gridId)
+                    }}
                 >
                 </div>
             )
@@ -203,7 +310,8 @@ const mapStateToProps = (state: any) => {
     return {
         adjList: state.pathFinders.adjacencyList,
         pathList: state.pathFinders.pathList,
-        visitedList: state.pathFinders.visited
+        visitedList: state.pathFinders.visited,
+        mazeBlocks: state.pathFinders.mazeBlocks
     }
 }
 
@@ -211,6 +319,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         addVertex: (vertex: string) => dispatch(addVertex(vertex)),
         addEdge: (vertex1: string, vertex2: string) => dispatch(addEdge(vertex1, vertex2)),
+        reset: (onlyPath: boolean) => dispatch(resetWallPath(onlyPath)),
+        mazeGenerator: (row: number, col: number, start: number, finish: number) => dispatch(mazeGenerator(row, col, start, finish)),
         BFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(BFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
         DFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
         DijkstraGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, blockedIds, startVertex, endVertex))

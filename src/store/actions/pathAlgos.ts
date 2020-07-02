@@ -3,6 +3,7 @@ import * as actionTypes from './actionTypes'
 import BFS from './path-finders/graphBFS'
 import DFS from './path-finders/graphDFS'
 import Dijstra from './path-finders/dijkstras'
+import mazeGen from './path-finders/mazeGen'
 
 export const addVertex: (vertex: string) => Object = (vertex) => {
     return {
@@ -60,3 +61,25 @@ export const DFSGraphSearch:
         }
 
     }
+
+export const mazeGenerator: (row: number, col: number, start: number, end: number) => Object = (row, col, start, end) => {
+    return {
+        type: actionTypes.MAZE_GEN,
+        payload: {
+            blocks: mazeGen(row, col, start, end)
+        }
+    }
+}
+
+export const resetWallPath: (onlyPath: boolean) => Object = (onlyPath) => {
+    if(onlyPath){
+        return {
+            type: actionTypes.CLEAR_PATH,
+            payload: {}
+        }
+    }
+    return {
+        type: actionTypes.CLEAR_WALL_PATH,
+        payload: {}
+    }
+}

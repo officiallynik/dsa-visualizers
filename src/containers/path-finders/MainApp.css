@@ -57,20 +57,52 @@
     border-right: 1px solid lightblue;
 }
 
-.start-grid-element {
-    background-color: purple;
+.fa-running {
+    font-size: 22px;
+    vertical-align: middle;
+    color: red;
 }
-.finish-grid-element {
-    background-color: green;
+.found-path {
+    color: green !important;
+    animation: expand-icons !important;
+    animation-duration: 1s !important;
+}
+@keyframes expand-icons {
+    0% {
+        font-size: 22px;
+    }
+    20%  {
+        font-size: 24px;
+    }
+    50% {
+        font-size: 26px;
+    }
+    80% {
+        font-size: 24px;
+    }
+    100% {
+        font-size: 22px;
+    }
+  }
+.no-path {
+    color: red !important;
+}
+
+.fa-home{
+    font-size: 22px;
+    vertical-align: middle;
+    color: red;
 }
 
 .block-wall {
-    background-color: cornflowerblue;
+    background-color: #0c3547 !important;
+    border: none;
 }
 
 .path-grid {
-    background-color: coral !important;
+    background-color: rgba(255, 127, 80, 0.7) !important;
     animation-name: path-fadein !important;
+    border: none;
 }
 
 @keyframes path-fadein {
@@ -86,7 +118,7 @@
 .visited-grid {
     background-color: #dcf26f;
     animation-name: stretch;
-    animation-duration: 500ms; 
+    animation-duration: 1000ms; 
     animation-timing-function: ease-out; 
     animation-delay: 0;
     animation-direction: alternate;
@@ -101,10 +133,10 @@
       border-radius: 100%;
     }
     50% {
-      background-color: #4d875c;
+      background-color: skyblue;
     }
     70% {
-      transform: scale(1);
+      transform: scale(0.9);
       background-color: #5ea671;
     }
     100% {
