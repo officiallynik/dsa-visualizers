@@ -296,6 +296,10 @@ const MainApp: React.FC = (props: any) => {
         )
     }
 
+    useEffect(() => {
+        return resetBoard
+    }, [])
+
     return (
         <div>
             {Navbar}
