@@ -1,0 +1,140 @@
+.nav-bar {
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    justify-content: space-between;
+}
+.nav-bar-left{
+    display: flex;
+    flex-direction: row;
+}
+.nav-bar-right{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-element {
+    color: white;
+    padding: 20px;
+    font-weight: bolder;
+    user-select: none;
+}
+
+.nav-element:hover {
+    background-color: white;
+    color: black;
+}
+
+.grid-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.grid-element {
+    width: 25px;
+    height: 25px;
+    border-top: 1px solid lightblue;
+    border-left: 1px solid lightblue;
+    display: grid;
+    align-content: center;
+}
+
+.grid-main {
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.border-bottom {
+    border-bottom: 1px solid lightblue;
+}
+.border-right {
+    border-right: 1px solid lightblue;
+}
+
+.fa-running {
+    font-size: 22px;
+    color: red;
+}
+.found-path {
+    color: green !important;
+    animation: expand-icons !important;
+    animation-duration: 1s !important;
+}
+@keyframes expand-icons {
+    0% {
+        font-size: 22px;
+    }
+    20%  {
+        font-size: 24px;
+    }
+    50% {
+        font-size: 26px;
+    }
+    80% {
+        font-size: 24px;
+    }
+    100% {
+        font-size: 22px;
+    }
+  }
+.no-path {
+    color: red !important;
+}
+
+.fa-home{
+    font-size: 22px;
+    color: red;
+}
+
+.block-wall {
+    background-color: #0c3547 !important;
+    border: none;
+}
+
+.path-grid {
+    background-color: rgba(255, 127, 80, 0.7) !important;
+    animation-name: path-fadein !important;
+    border: none;
+}
+
+@keyframes path-fadein {
+    0% {
+      transform: scale(.3);
+      border-radius: 100%;
+    }
+    70% {
+      transform: scale(1);
+    }
+  }
+
+.visited-grid {
+    background-color: #dcf26f;
+    animation-name: stretch;
+    animation-duration: 1000ms; 
+    animation-timing-function: ease-out; 
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-fill-mode: none;
+    animation-play-state: running;
+}
+
+@keyframes stretch {
+    0% {
+      transform: scale(.3);
+      background-color: blue;
+      border-radius: 100%;
+    }
+    50% {
+      background-color: skyblue;
+    }
+    70% {
+      transform: scale(0.9);
+      background-color: #5ea671;
+    }
+    100% {
+        background-color: #dcf26f;
+    }
+  }

@@ -18,6 +18,12 @@ const MainPage: React.FC = (props: any) => {
                         <p style={{fontSize: 24}}>Sorting Visualizers</p>
                     </div>
                 </div>
+                <div className='grid-view'>
+                    <div className='display-box' onClick={() => props.history.push('/path-finders')}>
+                        <i className="fas fa-road" style={{fontSize: 32, marginRight: 10}}></i>
+                        <p style={{fontSize: 24}}>Path Finders</p>
+                    </div>
+                </div>
             </div>
         </div>
     )

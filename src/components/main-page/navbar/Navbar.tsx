@@ -33,7 +33,7 @@ const CustomNavbar = (props: any) => (
 
             <div className='nav-element' 
                 onClick={() => {
-                    props.history.push('/under-construction')    
+                    props.history.push('/path-finders')    
             }}>Path Finders</div>
         </div>
         <div className='nav-bar-right'>
