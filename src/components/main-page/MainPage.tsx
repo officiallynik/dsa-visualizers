@@ -24,6 +24,12 @@ const MainPage: React.FC = (props: any) => {
                         <p style={{fontSize: 24}}>Path Finders</p>
                     </div>
                 </div>
+                <div className='grid-view'>
+                    <div className='display-box' onClick={() => props.history.push('/stacks-queues-lists')}>
+                        <i className="fab fa-stack-overflow" style={{fontSize: 32, marginRight: 10}}></i>
+                        <p style={{fontSize: 24}}>Stacks, Queues & List</p>
+                    </div>
+                </div>
             </div>
         </div>
     )

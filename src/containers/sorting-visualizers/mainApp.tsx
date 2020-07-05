@@ -121,7 +121,7 @@ const MainApp: React.FC = (props: any) => {
                         }}
                         val={arrSize}
                         min={5}
-                        max={110}
+                        max={170}
                         step={15}
                         onValChange={handleArrSize}
                         tooltip={false}
