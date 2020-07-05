@@ -1,35 +1,47 @@
 import React, { useState, useEffect } from 'react'
-import './Stacks.css'
+import './Queues.css'
 
 import CustomButton from '../CustomButton/Button'
 
 interface storageType {
-    val: number,
-    isHead: boolean,
-    beheading: boolean,
-    heading: boolean
+    val : number,
+    isHead : boolean,
+    beheading : boolean,
+    heading : boolean,
+    isTail : boolean,
+    betailing : boolean,
+    tailing : boolean
 }
 
-const StackDisplay = () => {
-    const [stack, setStack] = useState<Array<storageType>>([])
+const QueueDisplay = () => {
+    const [queue, setQueue] = useState<Array<storageType>>([])
     const [justAdded, setJustAdded] = useState(false)
 
-    const createStorageType = (head: boolean = false) => {
+    const createStorageType = (head: boolean = false, tail: boolean = false) => {
         let val: number
         let isHead: boolean
         let beheading: boolean
         let heading: boolean
+        let isTail: boolean
+        let betailing: boolean
+        let tailing: boolean
 
         val = Math.floor(Math.random() * 100)
         isHead = head
         beheading = false
         heading = false
+        isTail = tail
+        betailing = false
+        tailing = false
 
         return {
             val,
             isHead,
             beheading,
-            heading
+            heading,
+            isTail,
+            betailing,
+            tailing
         }
     }
 
@@ -37,7 +49,7 @@ const StackDisplay = () => {
         let elements: Array<storageType> = []
 
         for (let i = 0; i < 5; i++) {
-            i === 0 ? elements.push(createStorageType(true)) : elements.push(createStorageType())
+            i === 0 ? elements.push(createStorageType(true)) : i === 4? elements.push(createStorageType(false, true)) : elements.push(createStorageType())
         }
 
         return elements
@@ -45,70 +57,67 @@ const StackDisplay = () => {
 
     useEffect(() => {
         let elements = createRandomStack()
-        setStack(elements)
+        setQueue(elements)
     }, [])
 
-    const handlePush = (ele: storageType | undefined = undefined) => {
-        let element: storageType
-        if (ele === undefined) {
-            element = createStorageType()
-        }
-        else {
-            element = ele
-        }
+    const handleEnqueue = () => {
+        let element = createStorageType()
 
-        let oldStack = [...stack]
-        setStack([element, ...oldStack])
+        let oldQueue = [...queue]
+        let size = oldQueue.length
+        setQueue([...oldQueue, element])
 
         setTimeout(() => {
-            element.heading = true
-            if (oldStack[0])
-                oldStack[0].beheading = true
-            setStack([element, ...oldStack])
+            element.tailing = true
+            if (oldQueue[size-1])
+                oldQueue[size-1].betailing = true
+            setQueue([...oldQueue, element])
             setTimeout(() => {
-                if (oldStack[0]) {
-                    oldStack[0].isHead = false
-                    oldStack[0].beheading = false
+                if (oldQueue[size-1]) {
+                    oldQueue[size-1].isTail = false
+                    oldQueue[size-1].betailing = false
                 }
-                element.heading = false
-                element.isHead = true
-                setStack([element, ...oldStack])
+                element.tailing = false
+                element.isTail = true
+                if(size === 0)
+                    element.isHead = true
+                setQueue([...oldQueue, element])
 
                 setJustAdded(false)
             }, 500)
         }, 500)
     }
 
-    const handlePop = () => {
-        if (stack.length > 0) {
+    const handleDequeue = () => {
+        if (queue.length > 0) {
 
-            let oldStack = [...stack]
-            oldStack[0].beheading = true
-            if (oldStack[1])
-                oldStack[1].heading = true
+            let oldQueue = [...queue]
+            oldQueue[0].beheading = true
+            if (oldQueue[1])
+                oldQueue[1].heading = true
 
-            setStack([...oldStack])
+            setQueue([...oldQueue])
 
             setTimeout(() => {
-                oldStack[0].beheading = false
-                oldStack[0].isHead = false
-                if (oldStack[1]) {
-                    oldStack[1].heading = false
-                    oldStack[1].isHead = true
+                oldQueue[0].beheading = false
+                oldQueue[0].isHead = false
+                if (oldQueue[1]) {
+                    oldQueue[1].heading = false
+                    oldQueue[1].isHead = true
                 }
 
-                setStack([...oldStack])
+                setQueue([...oldQueue])
 
                 setTimeout(() => {
-                    oldStack.shift()
-                    setStack([...oldStack])
+                    oldQueue.shift()
+                    setQueue([...oldQueue])
                 }, 500)
             }, 500)
         }
     }
 
     const handlePeek = () => {
-        let head = document.getElementsByClassName('stack-element')[0]
+        let head = document.getElementsByClassName('queue-element')[0]
         if(head){
             head.classList.add('peek-element')
             setTimeout(() => {
@@ -121,11 +130,20 @@ const StackDisplay = () => {
         <div className='main-display'>
             <div className='left-section'>
                 <div className='display-section'>
-                    {stack.map((ele: storageType, idx: number) => {
-                        let classes = 'stack-element'
+                    {queue.map((ele: storageType, idx: number) => {
+                        let classes = 'queue-element'
                         let innerDisplay
 
-                        if (ele.isHead && ele.beheading) {
+                        if(ele.isTail && ele.isHead){
+                            classes += ' head-element'
+                            innerDisplay = (
+                                <div>
+                                    {ele.val}
+                                    <div>head/tail</div>
+                                </div>
+                            )
+                        }
+                        else if (ele.isHead && ele.beheading) {
                             if (!justAdded) {
                                 classes += ' being-behead'
                                 innerDisplay = (
@@ -154,7 +172,54 @@ const StackDisplay = () => {
                                 </div>
                             )
                         }
+                        else if (ele.isTail && ele.betailing) {
+                            if (!justAdded) {
+                                classes += ' being-behead'
+                                innerDisplay = (
+                                    <div>
+                                        {ele.val}
+                                        <div>tail/temp</div>
+                                    </div>
+                                )
+                            }
+                            else {
+                                classes += ' being-behead'
+                                innerDisplay = (
+                                    <div>
+                                        {ele.val}
+                                        <div>tail</div>
+                                    </div>
+                                )
+                            }
+                        }
+                        else if (ele.isTail) {
+                            classes += ' head-element'
+                            innerDisplay = (
+                                <div>
+                                    {ele.val}
+                                    <div>tail</div>
+                                </div>
+                            )
+                        }
                         else if (ele.heading) {
+                            classes += ' being-head'
+                            if (justAdded) {
+                                innerDisplay = (
+                                    <div>
+                                        {ele.val}
+                                        <div>temp</div>
+                                    </div>
+                                )
+                            }
+                            else {
+                                innerDisplay = (
+                                    <div>
+                                        {ele.val}
+                                    </div>
+                                )
+                            }
+                        }
+                        else if (ele.tailing) {
                             classes += ' being-head'
                             if (justAdded) {
                                 innerDisplay = (
@@ -192,7 +257,7 @@ const StackDisplay = () => {
                         <CustomButton
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
-                                setStack(createRandomStack())
+                                setQueue(createRandomStack())
                             }}
                         >Create</CustomButton>
                         <CustomButton
@@ -207,15 +272,15 @@ const StackDisplay = () => {
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
                                 setJustAdded(true)
-                                handlePush()
+                                handleEnqueue()
                             }}
-                        >Push</CustomButton>
+                        >EnQueue</CustomButton>
                         <CustomButton
                             styles={{ width: '49%', height: '98%' }}
                             handleButtonClick={() => {
-                                handlePop()
+                                handleDequeue()
                             }}
-                        >Pop</CustomButton>
+                        >DeQueue</CustomButton>
                     </div>
                 </div>
             </div>
@@ -223,4 +288,4 @@ const StackDisplay = () => {
     )
 }
 
-export default StackDisplay
+export default QueueDisplay
