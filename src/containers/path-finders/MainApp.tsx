@@ -190,18 +190,24 @@ const MainApp: React.FC = (props: any) => {
     let { mazeBlocks } = props
     useEffect(() => {
         if (mazeBlocks.length > 0) {
-            document.getElementById(`${mazeBlocks[0]}`)?.classList.add('block-wall')
-            let idx = 1
+            let idx = 0
             const interval = setInterval(() => {
-                if (idx !== start && idx !== finish) {
-                    document.getElementById(`${mazeBlocks[idx]}`)?.classList.add('block-wall');
+                if(document.getElementsByClassName('none-wall-remove')[0])
+                    document.getElementsByClassName('none-wall-remove')[0].classList.remove('none-wall-remove')
+                if(mazeBlocks[idx].dir === 'none'){
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add(`${mazeBlocks[idx].dir}-wall-remove`);
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add('visited-node')
                 }
-                if (idx === mazeBlocks.length) {
+                else{
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add(`${mazeBlocks[idx].dir}-wall-remove`);
+                }
+                if (idx === mazeBlocks.length-1) {
+                    document.getElementsByClassName('none-wall-remove')[0].classList.remove('none-wall-remove')
                     setRunnng(false)
                     clearInterval(interval)
                 }
                 idx++;
-            }, 5)
+            }, 1)
         }
     }, [mazeBlocks, finish, start])
 

@@ -138,3 +138,22 @@
         background-color: #dcf26f;
     }
   }
+
+.top-wall-remove {
+    border-top: none;
+}
+.bottom-wall-remove {
+    border-bottom: none;
+}
+.left-wall-remove {
+    border-left: none;
+}
+.right-wall-remove {
+    border-right: none;
+}
+.none-wall-remove {
+    background-color: yellow !important;
+}
+.visited-node {
+    background-color: #0c3547;
+}
