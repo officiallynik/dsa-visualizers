@@ -290,7 +290,7 @@ const MainApp: React.FC = (props: any) => {
     }
 
     const handleMouseEnter = (e: any, gridId: any) => {
-        if (dragWall && gridId !== start && gridId !== finish && !isMazed) {
+        if (dragWall && gridId !== start && gridId !== finish) {
             e.target.classList.toggle('block-wall')
         }
         else if (dragStart) {
@@ -340,11 +340,11 @@ const MainApp: React.FC = (props: any) => {
                     id={`${gridId}`}
 
                     onMouseDown={(e: any) => {
-                        if(!running)
+                        if(!running && !isMazed)
                             handleMouseDown(e, gridId)
                     }}
                     onMouseUp={() => {
-                        if(!running){
+                        if(!running && !isMazed){
                             setDragWall(false)
                             setDragFinish(false)
                             setDragStart(false)
@@ -353,7 +353,7 @@ const MainApp: React.FC = (props: any) => {
                         }
                     }}
                     onMouseEnter={(e: any) => {
-                        if(!running)
+                        if(!running && !isMazed)
                             handleMouseEnter(e, gridId)
                     }}
                 >
