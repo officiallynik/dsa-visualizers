@@ -97,7 +97,6 @@
 .path-grid {
     background-color: rgba(255, 127, 80, 0.7) !important;
     animation-name: path-fadein !important;
-    border: none;
 }
 
 @keyframes path-fadein {

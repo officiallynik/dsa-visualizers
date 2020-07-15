@@ -1,4 +1,4 @@
-const depthFirstSearch = (adjList: any, excludeList: string[], start: string, end: string) => {
+const depthFirstSearch = (adjList: any, start: string, end: string) => {
     let visited: any = {};
     let allVisitedNodes: string[] = [];
     let path: string[] = [];
@@ -17,7 +17,7 @@ const depthFirstSearch = (adjList: any, excludeList: string[], start: string, en
         let idx = 0
         let isEnd = false
         while (idx < nextList.length && !isEnd) {
-            if (!visited[nextList[idx]] && !excludeList.includes(nextList[idx])) {
+            if (!visited[nextList[idx]]) {
                 let res = dfs(nextList[idx])
                 if (res && res !== 'done') {
                     path.push(res)

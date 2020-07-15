@@ -15,7 +15,7 @@ class PriorityQueue {
     };
 }
 
-const Dijkstra = (adjList: any, excludeList: string[], start: string, finish: string) => {
+const Dijkstra = (adjList: any, start: string, finish: string) => {
     const nodes = new PriorityQueue();
     const distances: any = {};
     const previous: any = {};
@@ -24,16 +24,14 @@ const Dijkstra = (adjList: any, excludeList: string[], start: string, finish: st
     let allVisitedNodes: any = []
     //build up initial state
     for (let vertex in adjList) {
-        if(!excludeList.includes(vertex)){
-            if (vertex === start) {
-                distances[vertex] = 0;
-                nodes.enqueue(vertex, 0);
-            } else {
-                distances[vertex] = Infinity;
-                nodes.enqueue(vertex, Infinity);
-            }
-            previous[vertex] = null;
+        if (vertex === start) {
+            distances[vertex] = 0;
+            nodes.enqueue(vertex, 0);
+        } else {
+            distances[vertex] = Infinity;
+            nodes.enqueue(vertex, Infinity);
         }
+        previous[vertex] = null;
     }
     // as long as there is something to visit
     while (nodes.values.length) {
@@ -54,7 +52,7 @@ const Dijkstra = (adjList: any, excludeList: string[], start: string, finish: st
                 let nextNode = adjList[smallest][neighbor];
                 //calculate new distance to neighboring node
                 let candidate = distances[smallest] + 1;
-                let nextNeighbor = nextNode; 
+                let nextNeighbor = nextNode;
                 if (candidate < distances[nextNeighbor]) {
                     //updating new smallest distance to neighbor
                     distances[nextNeighbor] = candidate;

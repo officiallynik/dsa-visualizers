@@ -11,7 +11,7 @@ const getNeighbour = (currentCell: number, visited: Record<number, boolean>, row
     if(currentCell+col<=row*col && !visited[currentCell+col])
         neighbours.push([currentCell+col, 2])
     // check right
-    if(currentCell+1<=row*col && (currentCell+1)%(col+1)!==0 && !visited[currentCell+1])
+    if(currentCell+1<=row*col && currentCell%col!==0 && !visited[currentCell+1])
         neighbours.push([currentCell+1, 3])
     
     // randomly return a neighbour
@@ -30,6 +30,7 @@ interface result {
 const maze = ({ row, col }: { row: number; col: number; }) => {
     // console.log(row, col)
     let res: Array<result>  = []
+    let cellRes: Record<number, Array<string>> = {};
 
     let stack: number[] = [] 
     let visited: Record<number, boolean> = {}
@@ -43,11 +44,19 @@ const maze = ({ row, col }: { row: number; col: number; }) => {
             cell: currentCell,
             dir: 'none'
         })
+        if(!cellRes[currentCell]){
+            cellRes[currentCell] = [];
+        }
         let next = getNeighbour(currentCell, visited, row, col)
         if(next){
             stack.push(currentCell)
             switch (next[1]){
                 case 0:
+                    cellRes[currentCell].push('top')
+                    if(!cellRes[next[0]]){
+                        cellRes[next[0]] = []
+                    }
+                    cellRes[next[0]].push('bottom')
                     res.push({
                         cell: currentCell,
                         dir: 'top'
@@ -57,6 +66,11 @@ const maze = ({ row, col }: { row: number; col: number; }) => {
                     })
                     break
                 case 1:
+                    cellRes[currentCell].push('left')
+                    if(!cellRes[next[0]]){
+                        cellRes[next[0]] = []
+                    }
+                    cellRes[next[0]].push('right')
                     res.push({
                         cell: currentCell,
                         dir: 'left'
@@ -66,6 +80,11 @@ const maze = ({ row, col }: { row: number; col: number; }) => {
                     })
                     break
                 case 2:
+                    cellRes[currentCell].push('bottom')
+                    if(!cellRes[next[0]]){
+                        cellRes[next[0]] = []
+                    }
+                    cellRes[next[0]].push('top')
                     res.push({
                         cell: currentCell,
                         dir: 'bottom'
@@ -75,6 +94,11 @@ const maze = ({ row, col }: { row: number; col: number; }) => {
                     })
                     break
                 case 3:
+                    cellRes[currentCell].push('right')
+                    if(!cellRes[next[0]]){
+                        cellRes[next[0]] = []
+                    }
+                    cellRes[next[0]].push('left')
                     res.push({
                         cell: currentCell,
                         dir: 'right'
@@ -91,7 +115,7 @@ const maze = ({ row, col }: { row: number; col: number; }) => {
         }
     }
 
-    return res
+    return [res, cellRes]
 }
 
 const mazeGen = (row: number, col: number, start: number, finish: number) => maze({row, col})

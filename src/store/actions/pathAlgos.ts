@@ -33,40 +33,42 @@ export const animate: (path: string[], visited: string[]) => Object = (path, vis
 }
 
 export const DijkstraGraphSearch:
-    (adjList: any, blockedIds: string[], startVertex: string, endVertex: string) => any
-    = (adjList, blockedIds, startVertex, endVertex) => {
+    (adjList: any, startVertex: string, endVertex: string) => any
+    = (adjList, startVertex, endVertex) => {
         return (dispatch: Function) => {
-            let [visited, path] = Dijstra(adjList, blockedIds, startVertex, endVertex)
+            let [visited, path] = Dijstra(adjList, startVertex, endVertex)
             dispatch(animate(path, visited))
         }
 
     }
 
 export const BFSGraphSearch:
-    (adjList: any, blockedIds: string[], startVertex: string, endVertex: string) => any
-    = (adjList, blockedIds, startVertex, endVertex) => {
+    (adjList: any, startVertex: string, endVertex: string) => any
+    = (adjList, startVertex, endVertex) => {
         return (dispatch: Function) => {
-            let [visited, path] = BFS(adjList, blockedIds, startVertex, endVertex)
+            let [visited, path] = BFS(adjList, startVertex, endVertex)
             dispatch(animate(path, visited))
         }
 
     }
 
 export const DFSGraphSearch:
-    (adjList: any, blockedIds: string[], startVertex: string, endVertex: string) => any
-    = (adjList, blockedIds, startVertex, endVertex) => {
+    (adjList: any, startVertex: string, endVertex: string) => any
+    = (adjList, startVertex, endVertex) => {
         return (dispatch: Function) => {
-            let [visited, path] = DFS(adjList, blockedIds, startVertex, endVertex)
+            let [visited, path] = DFS(adjList, startVertex, endVertex)
             dispatch(animate(path, visited))
         }
 
     }
 
 export const mazeGenerator: (row: number, col: number, start: number, end: number) => Object = (row, col, start, end) => {
+    let blocks = mazeGen(row, col, start, end)
     return {
         type: actionTypes.MAZE_GEN,
         payload: {
-            blocks: mazeGen(row, col, start, end)
+            blocks: blocks[0],
+            cellList: blocks[1]
         }
     }
 }

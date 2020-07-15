@@ -4,12 +4,14 @@ let initialState: {
     adjacencyList: any,
     pathList: string[],
     visited: string[],
-    mazeBlocks: string[]
+    mazeBlocks: string[],
+    cellList: Record<number, Array<string>>
 } = {
     adjacencyList: {},
     pathList: [],
     visited: [],
-    mazeBlocks: []
+    mazeBlocks: [],
+    cellList: {}
 }
 
 const reducer = (state = initialState, action: { type: string, payload: any }) => {
@@ -42,10 +44,11 @@ const reducer = (state = initialState, action: { type: string, payload: any }) =
             }
 
         case actionTypes.MAZE_GEN:
-            let { blocks } = action.payload
+            let { blocks, cellList } = action.payload
             return {
                 ...state,
-                mazeBlocks: blocks
+                mazeBlocks: blocks,
+                cellList: cellList
             }
 
         case actionTypes.CLEAR_WALL_PATH:
@@ -53,7 +56,8 @@ const reducer = (state = initialState, action: { type: string, payload: any }) =
                 ...state,
                 mazeBlocks: [],
                 visited: [],
-                pathList: []
+                pathList: [],
+                cellList: []
             }
 
         case actionTypes.CLEAR_PATH:
