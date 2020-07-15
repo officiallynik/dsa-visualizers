@@ -7,6 +7,5 @@
 ## potential errors
 1. quick sort visualization
 ## todo
-1. astar algorithm in path finders
-2. quick sort proper animations
-3. other sections
+1. quick sort proper animations
+2. other sections

@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom'
 import './MainApp.css'
 import { connect } from 'react-redux'
 
-import { addVertex, addEdge,
-    BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath } from '../../store/actions'
+import { addVertex, addEdge, BFSGraphSearch, DFSGraphSearch, 
+    DijkstraGraphSearch, AStarGraphSearch, mazeGenerator, resetWallPath } from '../../store/actions'
 
 const MainApp: React.FC = (props: any) => {
     const gridRow = 31;
@@ -153,7 +153,11 @@ const MainApp: React.FC = (props: any) => {
 
                 <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-
+                        setRunnng(true)
+                        if(!running){
+                            softReset()
+                            props.AStarGraphSearch(modifyAdjlist(), `${start}`, `${finish}`)
+                        }
                     }}>Astar Algorithm</div>
 
                 <div className='nav-element' style={running? {color:'gray'}: {}}
@@ -399,7 +403,8 @@ const mapDispatchToProps = (dispatch: any) => {
         mazeGenerator: (row: number, col: number, start: number, finish: number) => dispatch(mazeGenerator(row, col, start, finish)),
         BFSGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(BFSGraphSearch(adjList, startVertex, endVertex)),
         DFSGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(DFSGraphSearch(adjList, startVertex, endVertex)),
-        DijkstraGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, startVertex, endVertex))
+        DijkstraGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, startVertex, endVertex)),
+        AStarGraphSearch: (adjList: Record<string, Array<string>>, startVertex: string, endVertex: string) => dispatch(AStarGraphSearch(adjList, startVertex, endVertex))
     }
 }
 
