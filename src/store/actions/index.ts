@@ -14,6 +14,7 @@ import {
     BFSGraphSearch,
     DFSGraphSearch,
     DijkstraGraphSearch,
+    AStarGraphSearch,
     mazeGenerator,
     resetWallPath
 } from './pathAlgos'
@@ -25,6 +26,6 @@ export {
 }
 
 export {
-    addEdge, addVertex,
-    BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath
+    addEdge, addVertex, BFSGraphSearch, DFSGraphSearch, 
+    DijkstraGraphSearch, AStarGraphSearch, mazeGenerator, resetWallPath
 }

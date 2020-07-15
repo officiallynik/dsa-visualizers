@@ -3,6 +3,7 @@ import * as actionTypes from './actionTypes'
 import BFS from './path-finders/graphBFS'
 import DFS from './path-finders/graphDFS'
 import Dijstra from './path-finders/dijkstras'
+import AStar from './path-finders/astar'
 import mazeGen from './path-finders/mazeGen'
 
 export const addVertex: (vertex: string) => Object = (vertex) => {
@@ -42,6 +43,16 @@ export const DijkstraGraphSearch:
 
     }
 
+export const AStarGraphSearch:
+    (adjList: Record<string, Array<string>>, startVertex: string, endVertex: string) => any
+    = (adjList, startVertex, endVertex) => {
+        return (dispatch: Function) => {
+            let [visited, path] = AStar(adjList, startVertex, endVertex)
+            dispatch(animate(path, visited))
+        }
+
+    }
+
 export const BFSGraphSearch:
     (adjList: any, startVertex: string, endVertex: string) => any
     = (adjList, startVertex, endVertex) => {
@@ -74,7 +85,7 @@ export const mazeGenerator: (row: number, col: number, start: number, end: numbe
 }
 
 export const resetWallPath: (onlyPath: boolean) => Object = (onlyPath) => {
-    if(onlyPath){
+    if (onlyPath) {
         return {
             type: actionTypes.CLEAR_PATH,
             payload: {}

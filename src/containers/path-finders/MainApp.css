@@ -155,4 +155,5 @@
 }
 .visited-node {
     background-color: #0c3547;
+    border-width: 2px;
 }
