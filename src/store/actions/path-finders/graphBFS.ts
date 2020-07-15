@@ -1,4 +1,4 @@
-const breadthFirstSearch = (adjList: any, excludeList: string[], start: string, finish: string) => {
+const breadthFirstSearch = (adjList: any, start: string, finish: string) => {
     let visited: any = {};
     let allVisitedNodes: string[] = []
     let path: string[] = [];
@@ -27,7 +27,7 @@ const breadthFirstSearch = (adjList: any, excludeList: string[], start: string, 
 
         let nextList = adjList[vertex]
         nextList.forEach((node: string) => {
-            if (!visited[node] && !queue.includes(node) && !excludeList.includes(node)) {
+            if (!visited[node] && !queue.includes(node)) {
                 relations[node] = vertex
                 queue.push(node)
             }

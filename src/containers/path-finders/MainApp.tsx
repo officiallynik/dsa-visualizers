@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom'
 import './MainApp.css'
 import { connect } from 'react-redux'
 
-import { addVertex, addEdge, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath } from '../../store/actions'
+import { addVertex, addEdge,
+    BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath } from '../../store/actions'
 
 const MainApp: React.FC = (props: any) => {
     const gridRow = 31;
@@ -11,24 +12,87 @@ const MainApp: React.FC = (props: any) => {
 
     const [start, setStart] = useState(1045)
     const [finish, setFinish] = useState(1095)
-
+    
     const [dragWall, setDragWall] = useState(false)
     const [dragStart, setDragStart] = useState(false)
     const [dragFinish, setDragFinish] = useState(false)
-
+    
     const [running, setRunnng] = useState(false)
+    const [isMazed, setIsMazed] = useState(false)
 
-    const getBlockedIds = () => {
-        let blockedIds = []
-        let blockedVertices = document.getElementsByClassName('block-wall')
-        for (let i = 0; i < blockedVertices.length; i++) {
-            blockedIds.push(blockedVertices[i].id)
+    const modifyAdjlist = () => {
+        let adjList = {...props.adjList}
+        if(isMazed){
+            console.log("Modifying")
+            let { cellList } = props
+            for(let i=1; i<=gridCol*gridRow; i++){
+                let dirs: Array<string> = cellList[i]
+                if(!dirs.includes('top') && i-gridCol>0){
+                    let newV1 = [...adjList[i]].filter((el: any) => +el!==i-gridCol)
+                    let newV2 = [...adjList[i-gridCol]].filter((el: any) => +el!==i)
+                    adjList[i] = newV1
+                    adjList[i-gridCol] = newV2
+                }
+                if(!dirs.includes('bottom') && i+gridCol<=gridRow*gridCol){
+                    let newV1 = [...adjList[i]].filter((el: any) => +el!==i+gridCol)
+                    let newV2 = [...adjList[i+gridCol]].filter((el: any) => +el!==i)
+                    adjList[i] = newV1
+                    adjList[i+gridCol] = newV2
+                }
+                if(!dirs.includes('left') && i-1>0 && (i-1)%gridCol!==0){
+                    let newV1 = [...adjList[i]].filter((el: any) => +el!==i-1)
+                    let newV2 = [...adjList[i-1]].filter((el: any) => +el!==i)
+                    adjList[i] = newV1
+                    adjList[i-1] = newV2
+                }
+                if(!dirs.includes('right') && i+1<=gridCol*gridRow && i%gridCol!==0){
+                    let newV1 = [...adjList[i]].filter((el: any) => +el!==i+1)
+                    let newV2 = [...adjList[i+1]].filter((el: any) => +el!==i)
+                    adjList[i] = newV1
+                    adjList[i+1] = newV2
+                }
+            }
         }
-        return blockedIds
+        else {
+            let blockedWalls = document.getElementsByClassName('block-wall');
+            [].forEach.call(blockedWalls, function (el: any) {
+                let v1 = +el.id
+                adjList[v1].forEach((v2: any) => {
+                    let newV2 = [...adjList[v2]].filter((el: any) => +el!==v1)
+                    adjList[v2] = newV2
+                })
+                delete adjList[v1]
+            });
+        }
+
+        return adjList
     }
 
     const resetBoard = () => {
+        setIsMazed(false)
         props.reset()
+        let mazePath = document.querySelectorAll(".visited-node");
+        [].forEach.call(mazePath, function (el: any) {
+            el.classList.remove("visited-node");
+        });
+        mazePath = document.querySelectorAll(".top-wall-remove");
+        [].forEach.call(mazePath, function (el: any) {
+            el.classList.remove("top-wall-remove");
+        });
+        mazePath = document.querySelectorAll(".bottom-wall-remove");
+        [].forEach.call(mazePath, function (el: any) {
+            el.classList.remove("bottom-wall-remove");
+        });
+        mazePath = document.querySelectorAll(".left-wall-remove");
+        [].forEach.call(mazePath, function (el: any) {
+            el.classList.remove("left-wall-remove");
+        });
+        mazePath = document.querySelectorAll(".right-wall-remove");
+        [].forEach.call(mazePath, function (el: any) {
+            el.classList.remove("right-wall-remove");
+        });
+
+
         let walls = document.querySelectorAll(".block-wall");
         [].forEach.call(walls, function (el: any) {
             el.classList.remove("block-wall");
@@ -79,17 +143,17 @@ const MainApp: React.FC = (props: any) => {
                 >DSA PLAYGROUND</div>
 
                 <div className='nav-element' style={running? {color:'gray'}: {}}
-                    onClick={() => {
+                    onClick={async () => {
                         setRunnng(true)
                         if(!running){
                             softReset()
-                            props.DijkstraGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                            props.DijkstraGraphSearch(modifyAdjlist(), `${start}`, `${finish}`)
                         }
                     }}>Dijstra's Algorithm</div>
 
                 <div className='nav-element' style={running? {color:'gray'}: {}}
                     onClick={() => {
-                        
+
                     }}>Astar Algorithm</div>
 
                 <div className='nav-element' style={running? {color:'gray'}: {}}
@@ -97,7 +161,7 @@ const MainApp: React.FC = (props: any) => {
                         setRunnng(true)
                         if(!running){
                             softReset()
-                            props.DFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                            props.DFSGraphSearch(modifyAdjlist(), `${start}`, `${finish}`)
                         }
                     }}>DFS Algorithm</div>
 
@@ -106,7 +170,7 @@ const MainApp: React.FC = (props: any) => {
                         setRunnng(true)
                         if(!running){
                             softReset()
-                            props.BFSGraphSearch(props.adjList, getBlockedIds(), `${start}`, `${finish}`)
+                            props.BFSGraphSearch(modifyAdjlist(), `${start}`, `${finish}`)
                         }
                     }}>BFS Algorithm</div>
             </div>
@@ -118,6 +182,7 @@ const MainApp: React.FC = (props: any) => {
                             resetBoard()
                             props.mazeGenerator(gridRow, gridCol, start, finish)
                         }
+                        setIsMazed(true)
                     }}
                 >Maze Generator</div>
 
@@ -190,20 +255,26 @@ const MainApp: React.FC = (props: any) => {
     let { mazeBlocks } = props
     useEffect(() => {
         if (mazeBlocks.length > 0) {
-            document.getElementById(`${mazeBlocks[0]}`)?.classList.add('block-wall')
-            let idx = 1
+            let idx = 0
             const interval = setInterval(() => {
-                if (idx !== start && idx !== finish) {
-                    document.getElementById(`${mazeBlocks[idx]}`)?.classList.add('block-wall');
+                if(document.getElementsByClassName('none-wall-remove')[0])
+                    document.getElementsByClassName('none-wall-remove')[0].classList.remove('none-wall-remove')
+                if(mazeBlocks[idx].dir === 'none'){
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add(`${mazeBlocks[idx].dir}-wall-remove`);
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add('visited-node')
                 }
-                if (idx === mazeBlocks.length) {
+                else{
+                    document.getElementById(`${mazeBlocks[idx].cell}`)?.classList.add(`${mazeBlocks[idx].dir}-wall-remove`);
+                }
+                if (idx === mazeBlocks.length-1) {
+                    document.getElementsByClassName('none-wall-remove')[0].classList.remove('none-wall-remove')
                     setRunnng(false)
                     clearInterval(interval)
                 }
                 idx++;
-            }, 5)
+            }, 1)
         }
-    }, [mazeBlocks, finish, start])
+    }, [mazeBlocks])
 
     const handleMouseDown = (e: any, gridId: any) => {
         if (gridId !== start && gridId !== finish) {
@@ -219,7 +290,7 @@ const MainApp: React.FC = (props: any) => {
     }
 
     const handleMouseEnter = (e: any, gridId: any) => {
-        if (dragWall && gridId !== start && gridId !== finish) {
+        if (dragWall && gridId !== start && gridId !== finish && !isMazed) {
             e.target.classList.toggle('block-wall')
         }
         else if (dragStart) {
@@ -315,7 +386,8 @@ const mapStateToProps = (state: any) => {
         adjList: state.pathFinders.adjacencyList,
         pathList: state.pathFinders.pathList,
         visitedList: state.pathFinders.visited,
-        mazeBlocks: state.pathFinders.mazeBlocks
+        mazeBlocks: state.pathFinders.mazeBlocks,
+        cellList: state.pathFinders.cellList
     }
 }
 
@@ -325,9 +397,9 @@ const mapDispatchToProps = (dispatch: any) => {
         addEdge: (vertex1: string, vertex2: string) => dispatch(addEdge(vertex1, vertex2)),
         reset: (onlyPath: boolean) => dispatch(resetWallPath(onlyPath)),
         mazeGenerator: (row: number, col: number, start: number, finish: number) => dispatch(mazeGenerator(row, col, start, finish)),
-        BFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(BFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
-        DFSGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DFSGraphSearch(adjList, blockedIds, startVertex, endVertex)),
-        DijkstraGraphSearch: (adjList: Object, blockedIds: string[], startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, blockedIds, startVertex, endVertex))
+        BFSGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(BFSGraphSearch(adjList, startVertex, endVertex)),
+        DFSGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(DFSGraphSearch(adjList, startVertex, endVertex)),
+        DijkstraGraphSearch: (adjList: Object, startVertex: string, endVertex: string) => dispatch(DijkstraGraphSearch(adjList, startVertex, endVertex))
     }
 }
 

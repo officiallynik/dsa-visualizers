@@ -25,5 +25,6 @@ export {
 }
 
 export {
-    addEdge, addVertex, BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath
+    addEdge, addVertex,
+    BFSGraphSearch, DFSGraphSearch, DijkstraGraphSearch, mazeGenerator, resetWallPath
 }
