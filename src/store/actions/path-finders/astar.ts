@@ -31,16 +31,11 @@ const reconstructPath = (cameFrom: Record<string, string>, current: string) => {
 
 const AStar = (adjList: Record<string, Array<string>>, start: string, finish: string) => {
     let allVisitedNodes: string[] = []
-
+    let nbCol = 69
     let heuristics: Array<number> = []
     let nbNodes = Object.keys(adjList).length
     for(let i=0; i<=nbNodes; i++){
-        if((+finish)-i < 0){
-            heuristics.push(i)
-        }
-        else{
-            heuristics.push(+finish-i)
-        }
+        heuristics.push(Math.abs(+finish-i))
     }
 
     let openSet = new PriorityQueue()
